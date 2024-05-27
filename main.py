@@ -1,5 +1,6 @@
 from lesson2_mod import testOne
 from lesson3_mod import isQrty, testList, testTernar, testTuple
+from lesson4_mod import testReadWrite, read_zip_all, calculate_distance
 
 # lesson 2
 testOne()
@@ -17,3 +18,11 @@ testTuple()
 lst=[1,2,3]
 lst = lst[1:2:2]
 print(lst)
+
+testReadWrite()
+
+read_zip_all()
+
+distance = calculate_distance([1, 1], [2, 2])
+
+print("ASDASDASDASD"+distance)
