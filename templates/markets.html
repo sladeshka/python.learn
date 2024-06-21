@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Markets</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Markets</h1>
+    <menu class="row">
+        <a class="col-3" href="/">Main</a>
+        <a class="col-3" href="/states">States</a>
+        <a class="col-3" href="/cities">Cities</a>
+        <a class="col-3" href="/revievs">Revievs</a>
+    </menu>
+<table class="table table-responsive">
+        <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Postcode</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>
+                <a href="?sort={{ sort }}">Rating</a>
+                {% if sort == "asc" %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-arrow-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                </svg>
+                {% endif %}
+                {% if sort == "desc" %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-arrow-up" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+                </svg>
+                {% endif %}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for market in markets %}
+        <tr>
+            <td><a href="{{ url_for('page_get_market_details', market_id=market.market_id) }}">{{ market.market_name
+                }}</a>
+            </td>
+            <td>{{ market.street }}</td>
+            <td>{{ market.city_info.city }}</td>
+            <td>{{ market.state_info.state_full }}</td>
+            <td>{{ market.zip }}</td>
+            <td>{{ market.lat }}</td>
+            <td>{{ market.lon }}</td>
+            <td>{{ market.rating() }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if markets %}
+    <div class="row">
+        <div class="col-4">
+            {% if markets.has_prev %}
+            <a href="{{ url_for('page_get_markets', page=markets.prev_num) }}">Previous</a>
+            {% else %}
+            <span>Previous</span>
+            {% endif %}
+        </div>
+        <div class="col-4">
+            {% for page_num in markets.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+            {% if page_num != markets.page %}
+            <a href="{{ url_for('page_get_markets', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+            <span>{{ page_num }}</span>
+            {% endif %}
+            {% else %}
+            <span>...</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-4">
+            {% if markets.has_next %}
+            <a href="{{ url_for('page_get_markets', page=markets.next_num) }}">Next</a>
+            {% else %}
+            <span>Next</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

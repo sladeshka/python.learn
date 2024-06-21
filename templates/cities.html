@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Cities</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Cities</h1>
+    <menu class="row">
+        <a class="col-3" href="/">Main</a>
+        <a class="col-3" href="/states">States</a>
+        <a class="col-3" href="/cities">Cities</a>
+        <a class="col-3" href="/revievs">Revievs</a>
+    </menu>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for city in cities %}
+        <tr>
+            <td>{{ city.city_id }}</td>
+            <td><a href="/?city={{ city.city }}">{{ city.city }}</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-4">
+            {% if cities.has_prev %}
+            <a href="{{ url_for('page_get_cities', page=cities.prev_num) }}">Previous</a>
+            {% endif %}
+        </div>
+        <div class="col-4">
+            {% for page_num in cities.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+            {% if page_num != cities.page %}
+            <a href="{{ url_for('page_get_cities', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+            <span>{{ page_num }}</span>
+            {% endif %}
+            {% else %}
+            <span>...</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-4">
+            {% if cities.has_next %}
+            <a href="{{ url_for('page_get_cities', page=cities.next_num) }}">Next</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
